@@ -60,7 +60,7 @@ export default function LoginPage() {
         console.log('4. Redirecting to dashboard')
         // Redirect based on role
         if (merchant.role === 'admin' || merchant.role === 'super_admin') {
-          router.push('/admin')
+          router.push('/dashboard')
         } else {
           router.push('/dashboard')
         }
