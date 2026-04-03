@@ -3,8 +3,8 @@
 
 import { useState } from 'react'
 import { MapPin, Plus, Wifi, Battery, AlertCircle, Edit } from 'lucide-react'
-import { LocationMap } from '@/components/admin/locations/location-map'
-import { LocationTable } from '@/components/admin/locations/location-table'
+import {LocationMap} from '@/components/admin/locations/location-map'
+import LocationTable from '@/components/admin/locations/location-table'
 import { CreateLocationModal } from '@/components/admin/locations/create-location-modal'
 
 export default function LocationsPage() {
