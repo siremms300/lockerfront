@@ -139,7 +139,8 @@ export default function DriversPage() {
   useEffect(() => {
     if (!socket) return
 
-    socket.on('driver-location-update', (update: any) => {
+    // Define handlers as named functions so we can remove them properly
+    const handleLocationUpdate = (update: any) => {
       setDrivers(prev => prev.map(driver => 
         driver._id === update.driverId 
           ? { 
@@ -152,9 +153,9 @@ export default function DriversPage() {
           : driver
       ))
       toast.success(`Driver ${update.driverName} location updated`)
-    })
+    }
 
-    socket.on('delivery-status-update', (update: any) => {
+    const handleDeliveryStatusUpdate = (update: any) => {
       // Update deliveries list
       setDeliveries(prev => prev.map(d => 
         d._id === update.parcelId
@@ -177,11 +178,16 @@ export default function DriversPage() {
           return driver
         }))
       }
-    })
+    }
 
+    // Register event listeners
+    socket.on('driver-location-update', handleLocationUpdate)
+    socket.on('delivery-status-update', handleDeliveryStatusUpdate)
+
+    // Cleanup: remove both handlers with both arguments
     return () => {
-      socket.off('driver-location-update')
-      socket.off('delivery-status-update')
+      socket.off('driver-location-update', handleLocationUpdate)
+      socket.off('delivery-status-update', handleDeliveryStatusUpdate)
     }
   }, [socket])
 
@@ -189,7 +195,7 @@ export default function DriversPage() {
     try {
       setLoading(true)
       const response = await driverAPI.getAll({
-        status: selectedStatus,
+        status: selectedStatus !== 'all' ? selectedStatus : undefined,
         search: searchQuery,
         page: pagination.page,
         limit: pagination.limit
@@ -259,6 +265,7 @@ export default function DriversPage() {
       case 'inactive': return <Clock className="h-4 w-4 text-gray-500" />
       case 'offline': return <AlertCircle className="h-4 w-4 text-red-500" />
       case 'on_break': return <Clock className="h-4 w-4 text-yellow-500" />
+      default: return <Clock className="h-4 w-4 text-gray-500" />
     }
   }
 
@@ -269,6 +276,7 @@ export default function DriversPage() {
       case 'inactive': return 'bg-gray-100 text-gray-800'
       case 'offline': return 'bg-red-100 text-red-800'
       case 'on_break': return 'bg-yellow-100 text-yellow-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
   }
 
@@ -277,6 +285,7 @@ export default function DriversPage() {
       case 'bike': return '🛵'
       case 'car': return '🚗'
       case 'van': return '🚚'
+      default: return '🚗'
     }
   }
 
@@ -342,7 +351,7 @@ export default function DriversPage() {
               onClick={() => setViewMode('drivers')}
               className={cn(
                 "px-3 py-1.5 rounded text-sm font-medium transition",
-                viewMode === 'drivers' ? "bg-white shadow-sm text-pepper-600" : "text-gray-600 hover:text-gray-900"
+                viewMode === 'drivers' ? "bg-white shadow-sm text-orange-600" : "text-gray-600 hover:text-gray-900"
               )}
             >
               Drivers
@@ -351,7 +360,7 @@ export default function DriversPage() {
               onClick={() => setViewMode('deliveries')}
               className={cn(
                 "px-3 py-1.5 rounded text-sm font-medium transition",
-                viewMode === 'deliveries' ? "bg-white shadow-sm text-pepper-600" : "text-gray-600 hover:text-gray-900"
+                viewMode === 'deliveries' ? "bg-white shadow-sm text-orange-600" : "text-gray-600 hover:text-gray-900"
               )}
             >
               Deliveries
@@ -360,7 +369,7 @@ export default function DriversPage() {
               onClick={() => setViewMode('analytics')}
               className={cn(
                 "px-3 py-1.5 rounded text-sm font-medium transition",
-                viewMode === 'analytics' ? "bg-white shadow-sm text-pepper-600" : "text-gray-600 hover:text-gray-900"
+                viewMode === 'analytics' ? "bg-white shadow-sm text-orange-600" : "text-gray-600 hover:text-gray-900"
               )}
             >
               Analytics
@@ -369,7 +378,7 @@ export default function DriversPage() {
 
           <Link
             href="/dashboard/drivers/new"
-            className="px-4 py-2 pepper-gradient text-white rounded-lg hover:shadow-lg transition flex items-center space-x-2"
+            className="px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg hover:shadow-lg transition flex items-center space-x-2"
           >
             <Plus className="h-4 w-4" />
             <span>Add Driver</span>
@@ -420,7 +429,7 @@ export default function DriversPage() {
               <input
                 type="text"
                 placeholder="Search drivers by name, phone, or vehicle plate..."
-                className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg border border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20 focus:outline-none transition"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -431,7 +440,7 @@ export default function DriversPage() {
             <div className="flex items-center space-x-2">
               <Filter className="h-5 w-5 text-gray-500" />
               <select
-                className="px-3 py-2 bg-gray-50 rounded-lg border border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20 focus:outline-none transition"
+                className="px-3 py-2 bg-gray-50 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition"
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value as any)}
               >
@@ -461,7 +470,7 @@ export default function DriversPage() {
 
               {loading ? (
                 <div className="p-12 text-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-pepper-500 mx-auto mb-4" />
+                  <Loader2 className="h-8 w-8 animate-spin text-orange-500 mx-auto mb-4" />
                   <p className="text-gray-600">Loading drivers...</p>
                 </div>
               ) : (
@@ -477,7 +486,7 @@ export default function DriversPage() {
                         className={cn(
                           "p-4 cursor-pointer transition-colors",
                           selectedDriver === driver._id
-                            ? "bg-pepper-50 border-l-4 border-pepper-500"
+                            ? "bg-orange-50 border-l-4 border-orange-500"
                             : "hover:bg-gray-50"
                         )}
                       >
@@ -771,7 +780,7 @@ export default function DriversPage() {
                       {/* Actions */}
                       <div className="flex space-x-3">
                         <Link href={`/dashboard/drivers/${driver._id}/edit`} className="flex-1">
-                          <button className="w-full px-4 py-2 bg-pepper-500 text-white rounded-lg hover:bg-pepper-600 transition font-medium">
+                          <button className="w-full px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-medium">
                             Edit Driver
                           </button>
                         </Link>
@@ -788,8 +797,8 @@ export default function DriversPage() {
               })() : (
                 <div className="bg-white rounded-xl shadow-soft p-6 border border-gray-200">
                   <div className="flex items-center space-x-3 mb-6">
-                    <div className="p-2 bg-pepper-50 rounded-lg">
-                      <BarChart3 className="h-6 w-6 text-pepper-600" />
+                    <div className="p-2 bg-orange-50 rounded-lg">
+                      <BarChart3 className="h-6 w-6 text-orange-600" />
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900">Fleet Overview</h3>
@@ -847,28 +856,28 @@ export default function DriversPage() {
             </AnimatePresence>
 
             {/* Real-time Status */}
-            <div className="bg-gradient-to-r from-pepper-600 to-pepper-500 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-r from-orange-600 to-red-600 rounded-xl p-6 text-white">
               <div className="flex items-center space-x-3 mb-4">
                 <Shield className="h-6 w-6" />
                 <h3 className="font-bold">Real-time Monitoring</h3>
               </div>
-              <p className="text-pepper-100 text-sm mb-4">
+              <p className="text-orange-100 text-sm mb-4">
                 Live tracking and updates from your driver fleet
               </p>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-pepper-200">Live Updates</span>
+                  <span className="text-orange-200">Live Updates</span>
                   <div className="flex items-center space-x-1">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                     <span>Active</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-pepper-200">Last Update</span>
+                  <span className="text-orange-200">Last Update</span>
                   <span>Just now</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-pepper-200">Connected Drivers</span>
+                  <span className="text-orange-200">Connected Drivers</span>
                   <span>{stats.activeDrivers}/{stats.totalDrivers}</span>
                 </div>
               </div>
@@ -889,7 +898,7 @@ export default function DriversPage() {
                 </p>
               </div>
               <Link href="/dashboard/deliveries/new">
-                <button className="px-4 py-2 pepper-gradient text-white rounded-lg hover:shadow-lg transition flex items-center space-x-2">
+                <button className="px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg hover:shadow-lg transition flex items-center space-x-2">
                   <Plus className="h-4 w-4" />
                   <span>New Delivery</span>
                 </button>
@@ -1064,7 +1073,7 @@ export default function DriversPage() {
               <div className="space-y-3">
                 {drivers.slice(0, 5).map((driver, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-pepper-500 rounded-full mt-2"></div>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
                     <div className="flex-1">
                       <div className="text-sm text-gray-900">
                         <span className="font-medium">{driver.name}</span>{' '}
@@ -1085,7 +1094,7 @@ export default function DriversPage() {
             </div>
 
             {/* Quick Reports */}
-            <div className="bg-gradient-to-r from-pepper-600 to-pepper-500 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-r from-orange-600 to-red-600 rounded-xl p-6 text-white">
               <h3 className="font-bold mb-4">Generate Reports</h3>
               <div className="space-y-3">
                 <button className="w-full px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition font-medium text-sm">
@@ -1097,7 +1106,7 @@ export default function DriversPage() {
                 <button className="w-full px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition font-medium text-sm">
                   Driver Payment Summary
                 </button>
-                <button className="w-full px-4 py-2 bg-white text-pepper-600 rounded-lg hover:bg-gray-100 transition font-medium text-sm">
+                <button className="w-full px-4 py-2 bg-white text-orange-600 rounded-lg hover:bg-gray-100 transition font-medium text-sm">
                   Export All Data
                 </button>
               </div>
@@ -1108,8 +1117,6 @@ export default function DriversPage() {
     </div>
   )
 }
-
-
 
 
 
