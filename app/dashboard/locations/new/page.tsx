@@ -30,9 +30,7 @@ import Link from 'next/link'
 
 const locationSchema = z.object({
   name: z.string().min(2, 'Location name must be at least 2 characters'),
-  type: z.enum(['locker', 'staffed_hub'], {
-    required_error: 'Please select location type',
-  }),
+  type: z.enum(['locker', 'staffed_hub']),
   address: z.object({
     street: z.string().min(1, 'Street address is required'),
     city: z.string().min(1, 'City is required'),
@@ -187,18 +185,18 @@ export default function CreateLocationPage() {
                     {index > 0 && (
                       <div className={cn(
                         "absolute top-4 left-0 w-full h-0.5 -translate-x-1/2",
-                        isCompleted ? "bg-pepper-500" : "bg-gray-300"
+                        isCompleted ? "bg-orange-500" : "bg-gray-300"
                       )} />
                     )}
                     
                     {/* Step circle */}
                     <div className={cn(
                       "relative z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
-                      isActive && "scale-110 shadow-pepper",
+                      isActive && "scale-110 shadow-orange",
                       isCompleted 
-                        ? "pepper-gradient text-white" 
+                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" 
                         : isActive
-                        ? "bg-pepper-100 border-2 border-pepper-500 text-pepper-600"
+                        ? "bg-orange-100 border-2 border-orange-500 text-orange-600"
                         : "bg-gray-100 text-gray-500"
                     )}>
                       {isCompleted ? (
@@ -211,7 +209,7 @@ export default function CreateLocationPage() {
                     {/* Step label */}
                     <span className={cn(
                       "mt-2 text-xs font-medium",
-                      isActive ? "text-pepper-600" : "text-gray-500"
+                      isActive ? "text-orange-600" : "text-gray-500"
                     )}>
                       {s.title}
                     </span>
@@ -234,8 +232,8 @@ export default function CreateLocationPage() {
                 className="space-y-6"
               >
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="p-2 bg-pepper-50 rounded-lg">
-                    <Building className="h-6 w-6 text-pepper-600" />
+                  <div className="p-2 bg-orange-50 rounded-lg">
+                    <Building className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Basic Information</h3>
@@ -252,7 +250,7 @@ export default function CreateLocationPage() {
                       {...register('name')}
                       className={cn(
                         "w-full px-4 py-3 rounded-lg border",
-                        "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                        "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                         errors.name && "border-red-500"
                       )}
                       placeholder="e.g., Ikeja City Mall Locker"
@@ -270,7 +268,7 @@ export default function CreateLocationPage() {
                       <label className={cn(
                         "border-2 rounded-lg p-4 cursor-pointer transition-all",
                         locationType === 'locker'
-                          ? "border-pepper-500 bg-pepper-50"
+                          ? "border-orange-500 bg-orange-50"
                           : "border-gray-300 hover:border-gray-400"
                       )}>
                         <input
@@ -281,7 +279,7 @@ export default function CreateLocationPage() {
                         />
                         <div className="flex items-center space-x-3">
                           <div className="p-2 bg-white rounded-lg">
-                            <Zap className="h-5 w-5 text-pepper-600" />
+                            <Zap className="h-5 w-5 text-orange-600" />
                           </div>
                           <div>
                             <h4 className="font-medium text-gray-900">Smart Locker</h4>
@@ -293,7 +291,7 @@ export default function CreateLocationPage() {
                       <label className={cn(
                         "border-2 rounded-lg p-4 cursor-pointer transition-all",
                         locationType === 'staffed_hub'
-                          ? "border-pepper-500 bg-pepper-50"
+                          ? "border-orange-500 bg-orange-50"
                           : "border-gray-300 hover:border-gray-400"
                       )}>
                         <input
@@ -304,7 +302,7 @@ export default function CreateLocationPage() {
                         />
                         <div className="flex items-center space-x-3">
                           <div className="p-2 bg-white rounded-lg">
-                            <Clock className="h-5 w-5 text-pepper-600" />
+                            <Clock className="h-5 w-5 text-orange-600" />
                           </div>
                           <div>
                             <h4 className="font-medium text-gray-900">Staffed Hub</h4>
@@ -327,7 +325,7 @@ export default function CreateLocationPage() {
                         type="number"
                         {...register('capacity', { valueAsNumber: true })}
                         min="1"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
                         placeholder="e.g., 100"
                       />
                       <p className="text-xs text-gray-500 mt-1">
@@ -340,7 +338,7 @@ export default function CreateLocationPage() {
                     <input
                       type="checkbox"
                       {...register('isActive')}
-                      className="h-5 w-5 text-pepper-600 rounded"
+                      className="h-5 w-5 text-orange-600 rounded"
                     />
                     <div>
                       <label className="font-medium text-gray-900">Active on creation</label>
@@ -362,8 +360,8 @@ export default function CreateLocationPage() {
                 className="space-y-6"
               >
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="p-2 bg-pepper-50 rounded-lg">
-                    <MapPin className="h-6 w-6 text-pepper-600" />
+                  <div className="p-2 bg-orange-50 rounded-lg">
+                    <MapPin className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Address Details</h3>
@@ -380,7 +378,7 @@ export default function CreateLocationPage() {
                       {...register('address.street')}
                       className={cn(
                         "w-full px-4 py-3 rounded-lg border",
-                        "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                        "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                         errors.address?.street && "border-red-500"
                       )}
                       placeholder="123 Marina Street"
@@ -399,7 +397,7 @@ export default function CreateLocationPage() {
                         {...register('address.city')}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border",
-                          "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                          "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                           errors.address?.city && "border-red-500"
                         )}
                         placeholder="Lagos"
@@ -417,7 +415,7 @@ export default function CreateLocationPage() {
                         {...register('address.state')}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border",
-                          "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                          "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                           errors.address?.state && "border-red-500"
                         )}
                         placeholder="Lagos"
@@ -436,7 +434,7 @@ export default function CreateLocationPage() {
                       {...register('address.country')}
                       className={cn(
                         "w-full px-4 py-3 rounded-lg border",
-                        "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                        "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                         errors.address?.country && "border-red-500"
                       )}
                       placeholder="Nigeria"
@@ -458,8 +456,8 @@ export default function CreateLocationPage() {
                 className="space-y-6"
               >
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="p-2 bg-pepper-50 rounded-lg">
-                    <MapPin className="h-6 w-6 text-pepper-600" />
+                  <div className="p-2 bg-orange-50 rounded-lg">
+                    <MapPin className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">GPS Coordinates</h3>
@@ -471,7 +469,7 @@ export default function CreateLocationPage() {
                   {/* Map placeholder - in real app, integrate with Google Maps */}
                   <div 
                     onClick={handleMapClick}
-                    className="h-64 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 hover:border-pepper-500 hover:bg-pepper-50 transition cursor-pointer flex items-center justify-center"
+                    className="h-64 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-500 hover:bg-orange-50 transition cursor-pointer flex items-center justify-center"
                   >
                     <div className="text-center">
                       <MapPin className="h-8 w-8 text-gray-400 mx-auto mb-2" />
@@ -493,7 +491,7 @@ export default function CreateLocationPage() {
                         {...register('coordinates.lat', { valueAsNumber: true })}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border",
-                          "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                          "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                           errors.coordinates?.lat && "border-red-500"
                         )}
                         placeholder="6.5244"
@@ -513,7 +511,7 @@ export default function CreateLocationPage() {
                         {...register('coordinates.lng', { valueAsNumber: true })}
                         className={cn(
                           "w-full px-4 py-3 rounded-lg border",
-                          "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                          "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                           errors.coordinates?.lng && "border-red-500"
                         )}
                         placeholder="3.3792"
@@ -549,8 +547,8 @@ export default function CreateLocationPage() {
                 className="space-y-6"
               >
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="p-2 bg-pepper-50 rounded-lg">
-                    <Clock className="h-6 w-6 text-pepper-600" />
+                  <div className="p-2 bg-orange-50 rounded-lg">
+                    <Clock className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Contact & Operating Hours</h3>
@@ -573,7 +571,7 @@ export default function CreateLocationPage() {
                             {...register('contact.phone')}
                             className={cn(
                               "w-full pl-10 pr-4 py-3 rounded-lg border",
-                              "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                              "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                               errors.contact?.phone && "border-red-500"
                             )}
                             placeholder="+234 800 000 0000"
@@ -594,7 +592,7 @@ export default function CreateLocationPage() {
                             {...register('contact.email')}
                             className={cn(
                               "w-full pl-10 pr-4 py-3 rounded-lg border",
-                              "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                              "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                               errors.contact?.email && "border-red-500"
                             )}
                             placeholder="location@example.com"
@@ -620,7 +618,7 @@ export default function CreateLocationPage() {
                           {...register('hours.opens')}
                           className={cn(
                             "w-full px-4 py-3 rounded-lg border",
-                            "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                            "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                             errors.hours?.opens && "border-red-500"
                           )}
                         />
@@ -638,7 +636,7 @@ export default function CreateLocationPage() {
                           {...register('hours.closes')}
                           className={cn(
                             "w-full px-4 py-3 rounded-lg border",
-                            "border-gray-300 focus:border-pepper-500 focus:ring-2 focus:ring-pepper-500/20",
+                            "border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20",
                             errors.hours?.closes && "border-red-500"
                           )}
                         />
@@ -691,7 +689,7 @@ export default function CreateLocationPage() {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="px-6 py-3 pepper-gradient text-white rounded-lg font-medium hover:shadow-lg transition flex items-center space-x-2"
+                    className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:shadow-lg transition flex items-center space-x-2"
                   >
                     <span>Continue</span>
                     <ArrowLeft className="h-4 w-4 rotate-180" />
@@ -701,7 +699,7 @@ export default function CreateLocationPage() {
                     type="submit"
                     disabled={loading}
                     className={cn(
-                      "px-8 py-3 pepper-gradient text-white rounded-lg font-bold",
+                      "px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-bold",
                       "hover:shadow-lg transform hover:-translate-y-0.5 transition-all",
                       "disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                     )}
