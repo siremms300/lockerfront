@@ -1,3 +1,4 @@
+
 // app/dashboard/analytics/page.tsx
 'use client'
 
@@ -572,14 +573,11 @@ export default function AnalyticsPage() {
                         fontSize={12}
                       />
                       <Tooltip 
-                        formatter={(value: any, name: string) => {
-                          if (name === 'Revenue (₦)') return [`₦${value.toLocaleString()}`, name]
+                        formatter={(value: any, name: any) => {
+                          if (name === 'Revenue (₦)') {
+                            return [`₦${Number(value).toLocaleString()}`, name]
+                          }
                           return [value, name]
-                        }}
-                        contentStyle={{ 
-                          backgroundColor: 'white', 
-                          border: '1px solid #e5e7eb',
-                          borderRadius: '0.5rem'
                         }}
                       />
                       <Legend />
@@ -636,7 +634,10 @@ export default function AnalyticsPage() {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        label={({ name, percent }) => {
+                          if (percent === undefined) return name
+                          return `${name}: ${(percent * 100).toFixed(0)}%`
+                        }}
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
@@ -649,7 +650,7 @@ export default function AnalyticsPage() {
                         ))}
                       </Pie>
                       <Tooltip 
-                        formatter={(value) => [value, 'Parcels']}
+                        formatter={(value: any) => [value, 'Parcels']}
                         contentStyle={{ 
                           backgroundColor: 'white', 
                           border: '1px solid #e5e7eb',
@@ -694,7 +695,7 @@ export default function AnalyticsPage() {
                         width={100}
                       />
                       <Tooltip 
-                        formatter={(value, name) => {
+                        formatter={(value: any, name: any) => {
                           if (name === 'revenue') return [`₦${Number(value).toLocaleString()}`, 'Revenue']
                           return [value, 'Parcels']
                         }}
@@ -902,11 +903,6 @@ export default function AnalyticsPage() {
     </div>
   )
 }
-
-
-
-
-
 
 
 
