@@ -59,13 +59,18 @@ class SocketService {
     this.listeners.get(event)?.push(callback)
   }
 
-  off(event: string, callback: Function) {
+  off(event: string, callback?: Function) {
     const callbacks = this.listeners.get(event)
-    if (callbacks) {
-      const index = callbacks.indexOf(callback)
-      if (index > -1) {
-        callbacks.splice(index, 1)
-      }
+    if (!callbacks) return
+
+    if (!callback) {
+      this.listeners.delete(event)
+      return
+    }
+
+    const index = callbacks.indexOf(callback)
+    if (index > -1) {
+      callbacks.splice(index, 1)
     }
   }
 
