@@ -72,7 +72,7 @@ export function QuickActions() {
     try {
       // In a real app, fetch from backend
       // Mock data for now - replace with actual API call
-      const mockUpdates = [
+      const mockUpdates: SystemUpdate[] = [
         {
           id: '1',
           title: 'Performance Update',

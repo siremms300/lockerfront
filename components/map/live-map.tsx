@@ -131,8 +131,8 @@ export default function LiveMap({
   )
 }
 
-function cn(classes: string) {
-  return classes
+function cn(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(' ')
 }
 
 
