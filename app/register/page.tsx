@@ -32,9 +32,7 @@ const registerSchema = z.object({
     .regex(/[a-z]/, 'Must contain at least one lowercase letter')
     .regex(/\d/, 'Must contain at least one number'),
   confirmPassword: z.string(),
-  businessType: z.enum(['ecommerce', 'retail', 'logistics', 'other'], {
-    errorMap: () => ({ message: 'Please select a business type' })
-  }),
+  businessType: z.enum(['ecommerce', 'retail', 'logistics', 'other'], 'Please select a business type'),
   agreeToTerms: z.boolean().refine(val => val === true, {
     message: 'You must agree to the terms and conditions'
   })
