@@ -47,9 +47,7 @@ const parcelSchema = z.object({
 
 // Step 3: Delivery Options
 const deliverySchema = z.object({
-  pickupType: z.enum(['locker', 'staffed_hub'], {
-    required_error: 'Please select pickup type',
-  }),
+  pickupType: z.enum(['locker', 'staffed_hub'], 'Please select pickup type'),
   locationId: z.string().min(1, 'Please select a location'),
   lockerSize: z.enum(['small', 'medium', 'large']).optional(),
   pickupDeadline: z.string().min(1, 'Pickup deadline is required'),
