@@ -123,6 +123,7 @@ interface MerchantProfile {
     autoApproveReturns: boolean
     defaultLockerSize: string
   }
+  webhookUrl?: string
 }
 
 export default function SettingsPage() {

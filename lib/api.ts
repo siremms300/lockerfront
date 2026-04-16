@@ -70,6 +70,10 @@ export const authAPI = {
   register: (data: any) => api.post('/auth/register', data),
   logout: () => api.post('/auth/logout'), // Make sure this exists
   logoutAll: () => api.post('/auth/logout-all'),
+  getActiveSessions: () => api.get('/auth/sessions'),
+  revokeSession: (sessionId: string) => api.delete(`/auth/sessions/${sessionId}`),
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    api.post('/auth/change-password', data),
 }
 
 
@@ -79,6 +83,12 @@ export const merchantAPI = {
   updateProfile: (data: any) => api.put('/merchant/profile', data),
   getBilling: () => api.get('/merchant/billing'),
   generateApiKey: () => api.post('/merchant/api-key'),
+  getApiKeys: () => api.get('/merchant/api-keys'),
+  revokeApiKey: (keyId: string) => api.delete(`/merchant/api-keys/${keyId}`),
+  getTeamMembers: () => api.get('/merchant/team-members'),
+  updateTeamMember: (memberId: string, data: any) => api.put(`/merchant/team-members/${memberId}`, data),
+  removeTeamMember: (memberId: string) => api.delete(`/merchant/team-members/${memberId}`),
+  updateSettings: (data: any) => api.put('/merchant/settings', data),
 }
 
 export const parcelAPI = {
