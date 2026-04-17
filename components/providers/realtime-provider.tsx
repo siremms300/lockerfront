@@ -24,7 +24,8 @@ export function RealTimeProvider({ children }: { children: ReactNode }) {
     // In a real app, get token from localStorage
     const token = localStorage.getItem('token') || 'demo-token'
     
-    const socketInstance = io('http://localhost:5000', {
+    // const socketInstance = io('http://localhost:5000', {
+    const socketInstance = io('https://lockerback-3.onrender.com', {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnection: true,

@@ -8,7 +8,8 @@ class SocketService {
   connect(token: string) {
     if (this.socket?.connected) return
 
-    this.socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000', {
+    // this.socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000', {
+    this.socket = io(process.env.NEXT_PUBLIC_API_URL || 'https://lockerback-3.onrender.com', {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnection: true,
